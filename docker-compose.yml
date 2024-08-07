@@ -19,15 +19,15 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  kafka-manager:
-    image: hlebalbau/kafka-manager:latest
-    ports:
-      - "9000:9000"
-    environment:
-      ZK_HOSTS: zookeeper:2181
-    depends_on:
-      - zookeeper
-      - kafka
+  # kafka-manager:
+  #   image: hlebalbau/kafka-manager:latest
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     ZK_HOSTS: zookeeper:2181
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
 
   producer:
     build:

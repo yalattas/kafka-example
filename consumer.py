@@ -13,7 +13,7 @@ group_id = 'my-group'
 consumer = KafkaConsumer(
     bootstrap_servers='kafka:9092',
     auto_offset_reset='earliest',
-    enable_auto_commit=False,  # Disable auto-commit of offsets
+    enable_auto_commit=False,
     group_id=group_id,
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
