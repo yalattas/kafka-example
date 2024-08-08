@@ -1,13 +1,14 @@
 from kafka import KafkaConsumer, TopicPartition
 import json
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("kafka_consumer")
 
 # Define the topic and group ID
-topic = 'test_topic'
-group_id = 'my-group'
+topic = os.environ.get('KAFKA_TOPIC', default='test_topic')
+group_id = os.environ.get('KAFKA_GROUP_ID', default='group-1')
 
 # Create Kafka consumer
 consumer = KafkaConsumer(
@@ -26,7 +27,7 @@ logger.info("Consumer started...")
 try:
     for message in consumer:
         logger.info(f"Received message: {message.value} from partition: {message.partition}, offset: {message.offset}")
-        # Commit the offset manually after processing  the message
+        # # Commit the offset manually after processing  the message
         consumer.commit()
 except Exception as e:
     logger.error(f"Error in consumer: {str(e)}")

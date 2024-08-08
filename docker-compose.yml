@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   zookeeper:
+    container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
+    container_name: kafka
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
@@ -18,6 +20,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TOPIC: demo
 
   # kafka-manager:
   #   image: hlebalbau/kafka-manager:latest
@@ -29,18 +32,35 @@ services:
   #     - zookeeper
   #     - kafka
 
-  producer:
+  producer1:
+    container_name: producer
     build:
       context: .
       dockerfile: Dockerfile.producer
+    environment:
+      KAFKA_TOPIC: demo
     ports:
       - "8000:8000"
     depends_on:
       - kafka
 
-  consumer:
+  consumer1:
+    container_name: consumer1
     build:
       context: .
       dockerfile: Dockerfile.consumer
+    environment:
+      KAFKA_TOPIC: demo
+      KAFKA_GROUP_ID: group1
+    depends_on:
+      - kafka
+  consumer2:
+    container_name: consumer2
+    build:
+      context: .
+      dockerfile: Dockerfile.consumer
+    environment:
+      KAFKA_TOPIC: demo
+      KAFKA_GROUP_ID: group2
     depends_on:
       - kafka
